@@ -1,0 +1,21 @@
+
+[   
+    {
+    "id":0,
+    "vendor_id": 13,
+    "client_id": 2,
+    "courier_id": 747,
+    "order_price": 7000,
+    "delivery_price": 800,
+    "delivery_address": "Нариманова, д.1"
+    }, 
+    {
+    "id":1,
+    "vendor_id": 16,
+    "client_id": 9,
+    "courier_id": 712,
+    "order_price": 3000,
+    "delivery_price": 600,
+    "delivery_address": "Врача Михайлова, д.44"
+    }
+]
