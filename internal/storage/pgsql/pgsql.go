@@ -14,33 +14,10 @@ type Storage struct {
 	db *sql.DB
 }
 
-type Order struct {
-	ID        int
-	VendorID  int
-	CourierID int
-	ClientID  int
-	Address   string
-	TimeDate  string //пока string
-}
-
 type Client struct {
 	ID    int
 	Name  string
 	Phone string //пока string
-}
-
-type Vendor struct {
-	ID      int
-	Name    string
-	Phone   string // пока string
-	Address string
-}
-
-type CourierID struct {
-	ID     int
-	Name   string
-	Phone  string
-	Status string
 }
 
 func New(cfg config.Config) (*Storage, error) {
