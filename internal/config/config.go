@@ -9,13 +9,15 @@ import (
 )
 
 const (
-	CONFIG_PATH = "./config/config.yaml"
+	CONFIG_PATH = "./config/local.yaml"
 )
 
 type Config struct {
 	Env         string `yaml:"env" env-default:"local"`
+	Token       string `yaml:"token"`
 	StoragePath string `yaml:"storage_path"`
-	HTTPServer  HTTPServer
+	HTTPServer  `yaml:"http_server"`
+	DB          `yaml:"database"`
 }
 
 type HTTPServer struct {
@@ -24,10 +26,18 @@ type HTTPServer struct {
 	IdleTimout time.Duration `yaml:"idle_timeout" env-default:"60s"`
 }
 
+type DB struct {
+	Host     string
+	Port     int
+	User     string
+	Password string
+	DBName   string `yaml:"db_name"`
+}
+
 func MustLoad() *Config {
 	configPath := CONFIG_PATH
 	if configPath == "" {
-		log.Fatal("CONFIG_PATH is not set")
+		log.Fatal("config path is empty")
 	}
 
 	if _, err := os.Stat(configPath); err != nil {

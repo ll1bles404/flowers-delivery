@@ -1,11 +1,14 @@
 package pgsql
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"fmt"
 	"log"
+	"os"
 
+	pgx "github.com/jackc/pgx/v5"
 	_ "github.com/lib/pq"
 	"github.com/ll1bles404/flowers-delivery/internal/config"
 )
@@ -21,10 +24,20 @@ type Client struct {
 }
 
 func New(cfg config.Config) (*Storage, error) {
+	url := fmt.Sprintf("postgres://%s:%s@%s:%d/%s", cfg.DB.User, cfg.DB.Password, cfg.DB.Host, cfg.DB.Port, cfg.DB.DBName)
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		cfg.DB.Host, cfg.DB.Port, cfg.DB.User, cfg.DB.Password, cfg.DB.DBName)
 
+	conn, err := pgx.Connect(context.Background(), url)
+
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+
+	defer conn.Close(context.Background())
+	fmt.Println()
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect: %w", err)
